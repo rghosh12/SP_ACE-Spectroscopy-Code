@@ -33,10 +33,12 @@ numpy
 scipy        # for scipy.linalg.lstsq in uncertains2.py
 ```
 
-Install with:
+Install with (from repository root):
 ```bash
-pip install numpy scipy
+pip install -r requirements.txt
 ```
+
+Or: `pip install numpy scipy`
 
 ## Usage
 

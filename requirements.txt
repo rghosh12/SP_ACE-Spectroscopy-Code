@@ -1,0 +1,3 @@
+# Python port: ConvertedPython_code/ (see README.md)
+numpy>=1.20
+scipy>=1.7

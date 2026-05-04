@@ -136,6 +136,7 @@ def main(par_file):
     print("Starting TGM fitting...")
     max_outer = 20
     flag_lim = flag_limS = flag_move = False
+    info_tgm = 0  # last LM exit code from outer TGM loop (Fortran lmdif1 info)
 
     for outer in range(max_outer):
         # Load GCOG for current grid point
@@ -224,7 +225,7 @@ def main(par_file):
         unc.TGM_errors_null()
 
     # ── Write results ─────────────────────────────────────────────────────
-    conv = int(info_tgm) if 'info_tgm' in dir() else 0
+    conv = int(info_tgm)
     wr.write_res(flag_err, chisq, conv)
     print("SP_Ace finished successfully.")
 
