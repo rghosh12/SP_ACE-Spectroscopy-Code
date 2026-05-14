@@ -117,6 +117,8 @@ pip install -r requirements.txt -r requirements-dev.txt
 python -m pytest -q
 ```
 
+On **Windows PowerShell**, `head` is not available by default. To trim long GitHub Actions logs, use for example ``gh run view RUN_ID --log-failed | Select-Object -First 80``, or run the same pipeline in **Git Bash** where ``head`` exists.
+
 A **SciPy-based replacement for the LM loop** is intentionally **not** wired in; see ``fortran_tools/optimizer_placeholder.py`` and roadmap Stage 5.
 
 ---
