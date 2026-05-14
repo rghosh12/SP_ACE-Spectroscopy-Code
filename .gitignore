@@ -1,0 +1,25 @@
+# Build artifacts
+Fortran-95_code/space
+Fortran-95_code/space.exe
+*.o
+*.mod
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Editor
+.idea/
+.vscode/

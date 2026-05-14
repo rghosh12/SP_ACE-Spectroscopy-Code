@@ -34,49 +34,83 @@ The current `ConvertedPython_code/` tree is a **line-by-line port** intended for
 
 ```
 SP_ACE-Spectroscopy-Code/
-├── LICENSE                   # GNU GPL version 3 (full text)
-├── requirements.txt          # numpy, scipy for ConvertedPython_code
-├── Fortran-95_code/          # Original Fortran 95 source files (.f95)
-│   ├── data_lib.f95
-│   ├── error.f95
-│   ├── fit_cont.f95
-│   ├── func_poly.f95
-│   ├── interfaces.f95
-│   ├── make_model.f95
-│   ├── minimize.f95
-│   ├── num_type.f95
-│   ├── read_GCOG.f95
-│   ├── read_sp_ll.f95
-│   ├── share.f95
-│   ├── space.f95
-│   ├── space_pars.f95
-│   ├── stats.f95
-│   ├── uncertains2.f95
-│   ├── utils.f95
-│   └── write_res.f95
+├── LICENSE
+├── requirements.txt          # numpy, scipy (ConvertedPython_code)
+├── requirements-dev.txt      # pytest, matplotlib (CI + tooling)
+├── fortran_tools/            # Python wrapper, parsers, diagnostics (no physics)
+├── scripts/                  # CLI entry points
+├── tests/                    # pytest (GCOG paths, parsers, launcher)
+├── parity/                   # Parity workflow notes vs Fortran
+├── benchmarks/               # Placeholder for reference-star regression data
+├── .github/workflows/ci.yml
+├── Fortran-95_code/          # Fortran 95 + Makefile → ``space`` binary
+│   ├── Makefile
+│   ├── space.f95             # PROGRAM space (main)
+│   └── …
 │
-└── ConvertedPython_code/     # Python 3 translations of each Fortran module
-    ├── num_type.py
-    ├── data_lib.py
-    ├── share.py
-    ├── stats.py
-    ├── func_poly.py
-    ├── space_pars.py
-    ├── error.py
-    ├── read_sp_ll.py
-    ├── read_GCOG.py
-    ├── fit_cont.py
-    ├── make_model.py
-    ├── utils.py
-    ├── minimize.py
-    ├── uncertains2.py
-    ├── write_res.py
-    ├── interfaces.py
-    ├── space.py              # Main entry point
-    └── README.md             # Python port documentation
+└── ConvertedPython_code/     # Python 3 port (must match Fortran numerically)
+    └── …
 ```
 
-## Running the Python version
+## Fortran executable (reference)
+
+Build the official program (``PROGRAM space``):
+
+```bash
+make -C Fortran-95_code
+```
+
+On Windows, use [gfortran](https://gcc.gnu.org/wiki/GFortranBinaries) / MinGW and ``mingw32-make`` or ``make`` from MSYS2, then set:
+
+```bash
+set SP_ACE_EXE=C:\path\to\Fortran-95_code\space.exe
+```
+
+## Python launcher (Stage 1 — I/O only)
+
+Generate a minimal ``space.par`` and run the Fortran binary (requires ``SP_ACE_EXE`` and a real GCOG tree):
+
+```bash
+pip install -r requirements.txt
+python scripts/run_fortran_sp_ace.py --write-par work\run.par ^
+  --obs-sp fast_spectrum.txt --gcoglib C:\path\to\GCOG ^
+  --fwhm 2.0 --wave-lims 4500 6800
+```
+
+Or run with an existing parameter file:
+
+```bash
+python scripts/run_fortran_sp_ace.py path\to\space.par
+```
+
+## Output parsing and plots (Stage 2)
+
+After a successful run, SP_Ace writes ``<par_stem>_model.dat``, ``*_TGM_ABD.dat``, ``*_ew_meas.dat``. Load/plot from Python:
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+python scripts/plot_sp_ace_diagnostics.py path\to\run_model.dat -o diagnostic.png
+```
+
+Use ``fortran_tools.parse_outputs`` in your own scripts for structured access.
+
+## Parity and benchmarks
+
+- **``parity/README.md``** — how to compare GCOG rows and model outputs with Fortran.
+- **``benchmarks/README.md``** — how to add reference-star cases when data and libraries are available.
+
+## Tests (CI)
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+python -m pytest -q
+```
+
+A **SciPy-based replacement for the LM loop** is intentionally **not** wired in; see ``fortran_tools/optimizer_placeholder.py`` and roadmap Stage 5.
+
+---
+
+## Running the Python port (ConvertedPython_code)
 
 ```bash
 pip install -r requirements.txt
