@@ -20,3 +20,5 @@ first case once you have:
 3. Documented tolerances (pipeline vs literature systematics).
 
 CI can later run ``pytest -m benchmark`` only when ``BENCHMARK_DATA=1`` is set.
+
+See **[`REFERENCE_STAR_TEMPLATE.md`](REFERENCE_STAR_TEMPLATE.md)** for the per-star checklist ([GitHub #7](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/7)).

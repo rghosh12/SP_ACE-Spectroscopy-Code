@@ -10,10 +10,11 @@ This folder documents **line-by-line** and **numerical** parity between:
 
 1. **Filename convention** — Implemented in ``fortran_tools/gcog_filenames.py`` and
    unit-tested against the logic in ``ConvertedPython_code/read_GCOG.py``.
-2. **Row layout** — Each selected line in ``linelist.dat`` corresponds to one row
-   in the GCOG ``*4degpoly.dat`` file: **70** floats for the 4th-degree load
-   (**84** for ``space_6degpoly.dat``). Any Python reader must preserve **token
-   order** and **masking** from ``read_GCOG.f95``.
+2. **Row layout** — See **[`GCOG_LIBRARY_FORMAT.md`](GCOG_LIBRARY_FORMAT.md)** for file paths, 70 vs 84 floats, and in-memory targets. Structural tests live in ``tests/test_gcog_filenames.py`` and ``tests/test_gcog_line_tokens.py``.
+
+## Model spectrum parity
+
+See **[`MODEL_PARITY_PLAN.md`](MODEL_PARITY_PLAN.md)** for the Fortran-vs-Python model comparison plan ([GitHub #4](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/4)).
 
 ## Suggested workflow
 

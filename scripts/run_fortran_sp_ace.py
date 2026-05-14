@@ -37,6 +37,11 @@ def main() -> int:
     p.add_argument("--exe", help="Path to Fortran ``space`` binary (else SP_ACE_EXE)")
     p.add_argument("--cwd", help="Working directory (default: par file directory)")
     p.add_argument("--timeout", type=float, default=None, help="Subprocess timeout (s)")
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="With --write-par only: write space.par then exit without running the binary",
+    )
     args = p.parse_args()
 
     par: Path | None = None
@@ -55,6 +60,10 @@ def main() -> int:
         par = Path(args.par_file)
     else:
         p.error("Provide par_file or --write-par ...")
+
+    if args.dry_run and args.write_par:
+        print(f"Wrote parameter file (dry-run): {par}", file=sys.stderr)
+        return 0
 
     exe = find_sp_ace_executable(args.exe)
     if exe is None:

@@ -18,13 +18,15 @@ The authors kept the production code in **Fortran** for good reasons. A Python r
 
 Suggested order of work:
 
-| Stage | Goal |
-|--------|------|
-| **1** | Thin **Python wrapper** (or small UI) around the **Fortran executable**: build `Fortran-95_code/`, fixed `space.par`, capture stdout and output files. |
-| **2** | **Parse SP_Ace outputs** and diagnostic plots (residuals, selected lines, convergence). |
-| **3** | **Python GCOG reader** (`read_GCOG.f95` / `read_GCOG.py`) tested **line-by-line** against Fortran-loaded in-memory arrays or logged dumps. |
-| **4** | **Python model spectrum** (`make_model.f95`, `func_poly.f95`, continuum pieces) tested against Fortran models on identical inputs. |
-| **5** | **Optimizer in Python** (e.g. `scipy.optimize.least_squares`) only **after** stages 3–4 match Fortran χ² and spectra. |
+| Stage | Goal | Issue |
+|--------|------|------|
+| **1** | Thin **Python wrapper** around the **Fortran executable**: build `Fortran-95_code/`, fixed `space.par`, capture stdout and output files. | [#1](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/1) |
+| **2** | **Parse SP_Ace outputs** and diagnostic plots (residuals, selected lines, convergence). | [#2](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/2) |
+| **3** | **Python GCOG reader** (`read_GCOG.f95` / `read_GCOG.py`) tested **line-by-line** against Fortran-loaded in-memory arrays or logged dumps. | [#3](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/3) |
+| **4** | **Python model spectrum** (`make_model.f95`, `func_poly.f95`, continuum pieces) tested against Fortran models on identical inputs. | [#4](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/4) |
+| **5** | **Optimizer in Python** (e.g. `scipy.optimize.least_squares`) only **after** stages 3–4 match Fortran χ² and spectra. | [#5](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/5) |
+| **Build** | Reproducible Fortran binary (Makefile, LAPACK, CI). | [#6](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/6) |
+| **Benchmarks** | Reference stars and scripted tolerances. | [#7](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/7) |
 
 The current `ConvertedPython_code/` tree is a **line-by-line port** intended for parity work—not a drop-in replacement until validated against Fortran on **known standard stars**.
 
@@ -37,14 +39,16 @@ SP_ACE-Spectroscopy-Code/
 ├── LICENSE
 ├── requirements.txt          # numpy, scipy (ConvertedPython_code)
 ├── requirements-dev.txt      # pytest, matplotlib (CI + tooling)
+├── docs/                     # ASCII output formats; Stage 5 optimizer policy
 ├── fortran_tools/            # Python wrapper, parsers, diagnostics (no physics)
-├── scripts/                  # CLI entry points
+├── scripts/                  # CLI entry points (see scripts/README.md)
 ├── tests/                    # pytest (GCOG paths, parsers, launcher)
 ├── parity/                   # Parity workflow notes vs Fortran
 ├── benchmarks/               # Placeholder for reference-star regression data
 ├── .github/workflows/ci.yml
 ├── Fortran-95_code/          # Fortran 95 + Makefile → ``space`` binary
 │   ├── Makefile
+│   ├── README.md             # Build / LAPACK / run instructions
 │   ├── space.f95             # PROGRAM space (main)
 │   └── …
 │
@@ -78,6 +82,8 @@ set SP_ACE_EXE=C:\path\to\Fortran-95_code\space.exe
 ```
 
 ## Python launcher (Stage 1 — I/O only)
+
+See **`scripts/README.md`** for full examples, ``--dry-run``, and links to GitHub issue #1.
 
 Generate a minimal ``space.par`` and run the Fortran binary (requires ``SP_ACE_EXE`` and a real GCOG tree):
 
@@ -116,6 +122,8 @@ Use ``fortran_tools.parse_outputs`` in your own scripts for structured access.
 pip install -r requirements.txt -r requirements-dev.txt
 python -m pytest -q
 ```
+
+Benchmark-style tests are **opt-in**: ``pytest.ini`` defaults to ``-m "not benchmark"``. Run ``python -m pytest -m benchmark`` when ``BENCHMARK_DATA=1`` and ``benchmarks/cases/`` are populated (see ``benchmarks/REFERENCE_STAR_TEMPLATE.md``).
 
 On **Windows PowerShell**, `head` is not available by default. To trim long GitHub Actions logs, use for example ``gh run view RUN_ID --log-failed | Select-Object -First 80``, or run the same pipeline in **Git Bash** where ``head`` exists.
 
