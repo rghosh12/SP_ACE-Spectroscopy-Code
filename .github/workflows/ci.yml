@@ -19,14 +19,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt -r requirements-dev.txt
       - name: Pytest
-        run: pytest -q
+        run: python -m pytest -q
 
   build-fortran:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install gfortran
-        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Install gfortran and LAPACK
+        run: sudo apt-get update && sudo apt-get install -y gfortran liblapack-dev libblas-dev
       - name: make
         env:
           FC: gfortran

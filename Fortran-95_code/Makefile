@@ -9,6 +9,8 @@
 FC      := gfortran
 FFLAGS  ?= -O2 -ffree-line-length-none
 LDFLAGS ?=
+# LAPACK (dgelss, ilaenv, …) is required by uncertains2.f95 — libraries after objects.
+LIBS    ?= -llapack -lblas
 
 # Dependency order: each file must compile after its MODULE dependencies.
 SRC := num_type.f95 stats.f95 share.f95 data_lib.f95 space_pars.f95 error.f95 \
@@ -22,7 +24,7 @@ TARGET := space
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	$(FC) $(FFLAGS) $(LDFLAGS) -o $@ $(SRC)
+	$(FC) $(FFLAGS) $(LDFLAGS) -o $@ $(SRC) $(LIBS)
 
 clean:
 	rm -f $(TARGET) $(TARGET).exe *.o *.mod

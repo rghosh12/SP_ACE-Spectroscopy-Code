@@ -62,6 +62,15 @@ compiles sources in **module dependency order**.
 make -C Fortran-95_code
 ```
 
+On Linux, install LAPACK/BLAS before linking (``uncertains2`` calls ``dgelss``):
+
+```bash
+sudo apt-get install liblapack-dev libblas-dev
+```
+
+The Makefile appends ``-llapack -lblas`` to the link line. On Windows/MSYS2, use a
+build that provides those libraries (e.g. OpenBLAS) and adjust ``LIBS`` if needed.
+
 On Windows, use [gfortran](https://gcc.gnu.org/wiki/GFortranBinaries) / MinGW and ``mingw32-make`` or ``make`` from MSYS2, then set:
 
 ```bash
