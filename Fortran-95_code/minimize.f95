@@ -94,7 +94,7 @@ SUBROUTINE chi_ABD(dimsp,dim_var,abdx,discrep)
          !this give to the chi^2 a minimum at 2 and -2. Later the abundances
          !that converged at -2 will be rejected and assigned a null value
          where(mask_internal) penal=abs(penal-2)/1.E6
-         discrep=discrep+(SIGN(1.,discrep)*SUM(penal,mask_internal)/dimsp)
+         discrep=discrep+(SIGN(1.0_DP,discrep)*SUM(penal,mask_internal)/dimsp)
        END IF
 
 END SUBROUTINE chi_ABD
