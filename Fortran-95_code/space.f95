@@ -137,7 +137,7 @@ PROGRAM space
         normal_loop: DO j=1,30
          CALL make_model_TGM_quick(f_model,TGM)
          CALL normalize_pars(TGM, TGMx, TGM_mask)
-         CALL lmdif1(chi_TGM_Q,dimsp,INT(SIZE(TGMx),I4B),TGMx,f_discrep,1E-3,infoTGM)
+         CALL lmdif1(chi_TGM_Q,dimsp,INT(SIZE(TGMx),I4B),TGMx,f_discrep,1.0E-3_DP,infoTGM)
          CALL denormalize_pars(TGM, TGMx, TGM_mask)
          !the following check if the values obscillate.
          !if the values obscillate, then keep result and continue the analysis
@@ -202,7 +202,7 @@ PROGRAM space
         !##############
 
         CALL normalize_pars(TGM, TGMxx, TGM_mask)
-        CALL lmdif1(chi_TGM,dimsp,INT(SIZE(TGMxx),I4B),TGMxx,f_discrep,1E-3,infoTGM)
+        CALL lmdif1(chi_TGM,dimsp,INT(SIZE(TGMxx),I4B),TGMxx,f_discrep,1.0E-3_DP,infoTGM)
         CALL denormalize_pars(TGM, TGMxx, TGM_mask)
         CALL make_model_TGM(f_model,TGM)
         chisq=SUM(((f_sp_norm-f_model)/sig_noise)**2)
@@ -261,7 +261,7 @@ PROGRAM space
         write(*,*) 'ABD loop'
         !assign to the dummy ABDx array the same values of ABD
         ABDx=ABD
-        CALL lmdif1(chi_ABD,dimsp,INT(SIZE(ABDx),I4B),ABDx,f_discrep,1E-3,infoABD)
+        CALL lmdif1(chi_ABD,dimsp,INT(SIZE(ABDx),I4B),ABDx,f_discrep,1.0E-3_DP,infoABD)
         !now assign to ABD the new values of ABDx
         ABD=UNPACK(ABDx,ABD_mask,ABD)
         CALL make_model_ABD(f_model,ABD)
