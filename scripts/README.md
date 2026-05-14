@@ -26,6 +26,20 @@ python scripts/run_fortran_sp_ace.py --write-par C:\work\myrun.par `
 
 Stdout/stderr and the process exit code are those of the Fortran process (`fortran_tools.launcher.run_sp_ace`).
 
+## `plot_sp_ace_run_dashboard.py` — full dashboard (Fortran outputs)
+
+After `space` finishes, one PNG with **obs vs model**, **residuals** (absolute + relative), **weight / mask proxy**, and **EW stem** (from `*_ew_meas.dat`):
+
+```bash
+python scripts/plot_sp_ace_run_dashboard.py path\to\myrun.par -o path\to\myrun_dashboard.png
+```
+
+Uses only files written by Fortran (`write_res`), so plots match the **reference** pipeline—ideal before Python parity.
+
+## Jupyter workflow
+
+See **`notebooks/sp_ace_visualization.ipynb`**: same plots interactively; optional cell materializes tiny demo files under `tests/fixtures/` for dry runs (gitignored).
+
 ## `plot_sp_ace_diagnostics.py` / `plot_sp_ace_results.py` — plots ([issue #2](https://github.com/rghosh12/SP_ACE-Spectroscopy-Code/issues/2))
 
 After a successful SP_Ace run, plot observed vs model and residuals from `*_model.dat`:

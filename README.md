@@ -38,9 +38,10 @@ The current `ConvertedPython_code/` tree is a **line-by-line port** intended for
 SP_ACE-Spectroscopy-Code/
 ├── LICENSE
 ├── requirements.txt          # numpy, scipy (ConvertedPython_code)
-├── requirements-dev.txt      # pytest, matplotlib (CI + tooling)
+├── requirements-dev.txt      # pytest, matplotlib, JupyterLab (dev + notebooks)
 ├── docs/                     # ASCII output formats; Stage 5 optimizer policy
-├── fortran_tools/            # Python wrapper, parsers, diagnostics (no physics)
+├── fortran_tools/            # Python wrapper, parsers, diagnostics, visualization
+├── notebooks/                # Jupyter: Fortran-run dashboards
 ├── scripts/                  # CLI entry points (see scripts/README.md)
 ├── tests/                    # pytest (GCOG paths, parsers, launcher)
 ├── parity/                   # Parity workflow notes vs Fortran
@@ -109,7 +110,15 @@ pip install -r requirements.txt -r requirements-dev.txt
 python scripts/plot_sp_ace_diagnostics.py path\to\run_model.dat -o diagnostic.png
 ```
 
-Use ``fortran_tools.parse_outputs`` in your own scripts for structured access.
+**Full dashboard (recommended for parity / reference stars):** observed vs model, residuals (Δ and relative), pixel **weights** (mask proxy), and **EW** stem plot—plus **χ² / conv / S/N** from ``*_TGM_ABD.dat`` in the figure title. Uses **only Fortran outputs**.
+
+```bash
+python scripts/plot_sp_ace_run_dashboard.py path\to\run.par -o path\to\run_dashboard.png
+```
+
+**Jupyter:** open ``notebooks/sp_ace_visualization.ipynb`` (install ``requirements-dev.txt`` for JupyterLab + ipykernel). See ``scripts/README.md`` for the kernel one-liner.
+
+Use ``fortran_tools.parse_outputs`` and ``fortran_tools.visualization`` in your own scripts for structured access.
 
 ## Parity and benchmarks
 

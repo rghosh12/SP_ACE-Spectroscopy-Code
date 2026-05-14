@@ -23,3 +23,8 @@ venv/
 # Editor
 .idea/
 .vscode/
+
+# Notebook outputs (regenerate locally)
+notebooks/_dashboard_out.png
+tests/fixtures/_notebook_demo.par
+tests/fixtures/_notebook_demo_*.dat

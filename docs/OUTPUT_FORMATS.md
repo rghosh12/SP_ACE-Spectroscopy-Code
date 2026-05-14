@@ -16,7 +16,7 @@ One row per wavelength pixel, **7** whitespace-separated columns:
 | 6 | `weights` | Pixel weight (0–1) |
 | 7 | `sn_var` | Stored as integer (`NINT` in Fortran) |
 
-Load in Python: `fortran_tools.parse_outputs.load_model_dat`.
+Load in Python: `fortran_tools.parse_outputs.load_model_dat`. Multi-panel plots (obs, model, residuals, weights, EWs): `fortran_tools.visualization.plot_run_dashboard` or `scripts/plot_sp_ace_run_dashboard.py`.
 
 ## `{stem}_TGM_ABD.dat`
 
