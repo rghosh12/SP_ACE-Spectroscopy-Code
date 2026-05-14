@@ -54,7 +54,9 @@ SP_ACE-Spectroscopy-Code/
 
 ## Fortran executable (reference)
 
-Build the official program (``PROGRAM space``):
+Build the official program (``PROGRAM space``). The Makefile forces **gfortran**
+(GNU make’s default ``FC`` is legacy ``f77``, which breaks this project) and
+compiles sources in **module dependency order**.
 
 ```bash
 make -C Fortran-95_code

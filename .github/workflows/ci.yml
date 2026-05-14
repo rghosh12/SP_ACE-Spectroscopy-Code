@@ -28,4 +28,6 @@ jobs:
       - name: Install gfortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: make
+        env:
+          FC: gfortran
         run: make -C Fortran-95_code
